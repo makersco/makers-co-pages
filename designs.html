@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Daily Design Concepts — Makers Co</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --bg:#0e0a08;--bg2:#140f0a;--bg3:#1c1410;
+  --p1:#FFD3AC;--p2:#FFB5AB;--p3:#E39A7B;--p4:#DBB06B;
+  --t1:#fdf5ee;--t2:#b8957a;--t3:#7a6250;
+  --grad:linear-gradient(135deg,#FFB5AB 0%,#E39A7B 52%,#DBB06B 100%);
+  --gtext:linear-gradient(135deg,#FFD3AC,#FFB5AB,#E39A7B);
+  --bdr:rgba(255,211,172,.09);--bdr2:rgba(255,211,172,.18);
+  --r:16px;--rlg:24px;--nav:72px;--max:1240px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:var(--nav)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(227,154,123,.35);color:#fff}
+
+#cur-dot{width:8px;height:8px;background:var(--p3);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .3s}
+#cur-ring{width:36px;height:36px;border:1.5px solid rgba(227,154,123,.45);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s,opacity .3s}
+#cur-dot.hov{width:0;height:0}#cur-ring.hov{width:52px;height:52px;border-color:rgba(227,154,123,.8)}
+@media(pointer:coarse){#cur-dot,#cur-ring{display:none}}
+
+#pb{position:fixed;top:0;left:0;height:2px;width:0%;background:var(--grad);z-index:9997;transition:width .1s linear}
+
+.prism-mark{animation:pspin 10s linear infinite}
+@keyframes pspin{0%{transform:rotateY(0deg) rotateX(0deg)}100%{transform:rotateY(360deg) rotateX(8deg)}}
+
+#nav{position:fixed;top:0;left:0;right:0;height:var(--nav);z-index:100;padding:0 clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:24px;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+#nav.scrolled{background:rgba(14,10,8,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-color:var(--bdr)}
+.n-logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:800;letter-spacing:-.04em;flex-shrink:0}
+.n-mark{width:36px;height:36px;display:flex;align-items:center;justify-content:center;transition:transform .3s}
+.n-logo:hover .n-mark{transform:rotate(-8deg) scale(1.1)}
+.n-links{display:flex;align-items:center;gap:32px;list-style:none}
+.n-links a{font-size:13.5px;font-weight:500;color:var(--t2);transition:color .2s}
+.n-links a:hover,.n-links a.active{color:var(--t1)}
+.n-cta{display:inline-flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:700;color:var(--t1);padding:9px 22px;border:1px solid var(--bdr2);border-radius:99px;background:rgba(255,211,172,.04);transition:all .25s;white-space:nowrap}
+.n-cta:hover{background:var(--grad);border-color:transparent;box-shadow:0 8px 28px rgba(227,154,123,.3)}
+.n-burger{display:none;background:none;border:none;color:var(--t1);font-size:20px;cursor:pointer;padding:4px}
+
+#mmenu{position:fixed;inset:0;top:var(--nav);background:rgba(14,10,8,.97);backdrop-filter:blur(24px);z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;opacity:0;pointer-events:none;transition:opacity .3s}
+#mmenu.open{opacity:1;pointer-events:all}
+#mmenu a{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,6vw,38px);font-weight:800;letter-spacing:-.04em;color:var(--t2);transition:color .2s}
+#mmenu a:hover{color:var(--t1)}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(90px);animation:ofloat 9s ease-in-out infinite}
+@keyframes ofloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-28px) scale(1.06)}66%{transform:translate(-16px,18px) scale(.94)}}
+
+.hero{min-height:56vh;display:flex;align-items:center;padding-top:calc(var(--nav) + 48px);padding-bottom:64px;position:relative;overflow:hidden}
+.hero-tag{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:20px;opacity:0;transform:translateY(12px)}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--p2);animation:pdot 2.2s ease infinite}
+@keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(255,181,171,.6)}50%{box-shadow:0 0 0 7px rgba(255,181,171,0)}}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,7vw,88px);font-weight:800;line-height:.98;letter-spacing:-.055em;margin-bottom:24px}
+.hero-title .ln{display:block;overflow:hidden}
+.hero-title .li{display:block;transform:translateY(110%)}
+.hero-title em{font-style:italic;background:var(--gtext);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(14px,1.4vw,17px);color:var(--t2);line-height:1.8;max-width:500px;opacity:0;transform:translateY(14px)}
+.divider{height:1px;background:var(--bdr)}
+
+/* filter tabs */
+.filter-wrap{padding:40px 0 32px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.ftab{display:inline-flex;align-items:center;gap:7px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;padding:9px 20px;border:1px solid var(--bdr);border-radius:99px;background:rgba(255,211,172,.03);color:var(--t2);cursor:pointer;transition:all .25s;white-space:nowrap}
+.ftab:hover{border-color:var(--bdr2);color:var(--t1)}
+.ftab.on{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 6px 20px rgba(227,154,123,.3)}
+.ftab i{font-size:12px}
+
+#designs-section{padding:0 0 120px;position:relative}
+#designs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+
+/* design card */
+.dc{
+  border:1px solid var(--bdr);border-radius:var(--rlg);
+  background:var(--bg2);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:border-color .35s,box-shadow .35s,transform .35s cubic-bezier(.16,1,.3,1);
+  cursor:pointer;position:relative;
+  opacity:0;transform:translateY(30px);
+}
+.dc:hover{border-color:rgba(227,154,123,.4);box-shadow:0 32px 60px rgba(0,0,0,.4),0 0 0 1px rgba(227,154,123,.14);transform:translateY(-6px)}
+/* animated top color bar */
+.dc-bar{height:3px;width:100%;transition:height .3s}
+.dc:hover .dc-bar{height:5px}
+.dc-body{padding:24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.dc-top{display:flex;align-items:center;justify-content:space-between}
+.dc-type{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:99px}
+.dc-style{font-size:11px;color:var(--t3)}
+.dc-brand{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.04em;line-height:1.1}
+.dc-niche{font-size:12.5px;color:var(--t2)}
+.dc-tagline{font-size:13px;color:var(--t3);font-style:italic;line-height:1.6}
+.dc-actions{display:flex;gap:9px;margin-top:auto;padding-top:4px}
+.dc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;padding:11px;border-radius:12px;color:#fff;transition:transform .2s,box-shadow .2s}
+.dc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.dc-btn-wa{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;border:1px solid var(--bdr2);background:rgba(255,211,172,.04);color:#25d366;font-size:14px;transition:all .25s}
+.dc-btn-wa:hover{border-color:#25d366}
+
+/* float animation on cards - subtle drift */
+@keyframes cardfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* states */
+#designs-loading,#designs-empty,#designs-no-match{text-align:center;padding:80px 0}
+#designs-loading i{font-size:32px;color:var(--p2);display:block;margin-bottom:12px}
+#designs-loading p,#designs-empty p,#designs-no-match p{color:var(--t3);font-size:15px}
+#designs-empty i{font-size:36px;color:var(--p2);display:block;margin-bottom:14px}
+#designs-empty .empty-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.03em;color:var(--t1);margin:8px 0 6px}
+.hidden{display:none!important}
+
+#designs-footer{text-align:center;margin-top:48px}
+.view-all{display:inline-flex;align-items:center;gap:9px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;padding:13px 28px;border:1px solid var(--bdr2);border-radius:99px;color:var(--t2);background:rgba(255,211,172,.04);transition:all .25s}
+.view-all:hover{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 28px rgba(227,154,123,.3)}
+
+footer{border-top:1px solid var(--bdr);padding:52px 0 40px}
+.foot-row{display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
+.foot-logo{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.04em}
+.foot-mark{width:30px;height:30px;background:var(--grad);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap}
+.foot-links a{font-size:13.5px;color:var(--t3);transition:color .2s}
+.foot-links a:hover{color:var(--t1)}
+.foot-copy{font-size:12.5px;color:var(--t3)}
+
+#wafab{position:fixed;bottom:28px;right:28px;width:54px;height:54px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;z-index:80;box-shadow:0 8px 28px rgba(37,211,102,.4);transition:transform .2s,box-shadow .2s}
+#wafab:hover{transform:scale(1.1);box-shadow:0 12px 32px rgba(37,211,102,.55)}
+#btt{position:fixed;bottom:96px;right:28px;width:44px;height:44px;border-radius:50%;background:rgba(227,154,123,.85);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;cursor:pointer;opacity:0;transition:opacity .3s,transform .2s;z-index:80;border:none}
+#btt.show{opacity:1}#btt:hover{transform:translateY(-2px)}
+#toast{position:fixed;bottom:100px;right:28px;background:var(--p3);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;display:none;align-items:center;gap:9px;z-index:200;box-shadow:0 8px 28px rgba(227,154,123,.4)}
+
+@media(max-width:860px){.n-links{display:none}.n-burger{display:block}#designs-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.filter-wrap{gap:7px}.ftab{font-size:12px;padding:8px 14px}.foot-row{flex-direction:column;text-align:center}}
+
+    /* ── Makers Co Orbit Logo animation ────────────────────────── */
+    .mkr-orbit .ring1{transform-origin:30px 30px;animation:mkr-spin1 8s linear infinite}
+    .mkr-orbit .ring2{transform-origin:30px 30px;animation:mkr-spin2 12s linear infinite reverse}
+    .mkr-orbit .ring3{transform-origin:30px 30px;animation:mkr-spin3 10s linear infinite}
+    .mkr-orbit .core-outer{transform-origin:30px 30px;animation:mkr-pulse 3s ease-in-out infinite}
+    @keyframes mkr-spin1{from{transform:rotate(-30deg)}to{transform:rotate(330deg)}}
+    @keyframes mkr-spin2{from{transform:rotate(50deg)}to{transform:rotate(410deg)}}
+    @keyframes mkr-spin3{from{transform:rotate(130deg)}to{transform:rotate(490deg)}}
+    @keyframes mkr-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.2);opacity:.75}}
+    @media(prefers-reduced-motion:reduce){
+      .mkr-orbit .ring1,.mkr-orbit .ring2,.mkr-orbit .ring3,.mkr-orbit .core-outer{animation:none}
+      .mkr-orbit .ring1{transform:rotate(-30deg)}
+      .mkr-orbit .ring2{transform:rotate(50deg)}
+      .mkr-orbit .ring3{transform:rotate(130deg)}
+    }
+    
+    .mkr-orbit .dot1{transform-origin:30px 30px;animation:mkr-spin1 8s linear infinite}
+    .mkr-orbit .dot2{transform-origin:30px 30px;animation:mkr-spin2 12s linear infinite reverse}
+    .mkr-orbit .dot3{transform-origin:30px 30px;animation:mkr-spin3 10s linear infinite}
+    </style>
+</head>
+<body>
+<div id="pb"></div>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<a id="wafab" href="https://wa.me/60172996254?text=Hi%20Makers%20Co!" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+<div id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg">Copied!</span></div>
+
+<div id="mmenu">
+  <a href="index.html" onclick="cm()">Home</a>
+  <a href="index.html#services" onclick="cm()">Services</a>
+  <a href="https://makersco.github.io/ecommerce-daily-builds/" onclick="cm()">Daily Builds</a>
+  <a href="https://makersco.github.io/ecommerce-daily-builds/designs/" class="active" onclick="cm()">Designs</a>
+  <a href="https://makersco.github.io/ecommerce-daily-builds/cards/" onclick="cm()">Biz Cards</a>
+  <a href="index.html#contact" onclick="cm()" style="background:var(--grad);padding:12px 32px;border-radius:99px;color:#fff;font-size:18px">Start a project →</a>
+</div>
+
+<nav id="nav">
+  <a href="index.html" class="n-logo">
+    <div class="n-mark">
+      <svg class="mkr-orbit" viewBox="0 0 60 60" width="36" height="36" fill="none">
+          <ellipse class="ring1" cx="30" cy="30" rx="20" ry="7.5" stroke="#FFD3AC" stroke-width="2.4" fill="none"/>
+          <ellipse class="ring2" cx="30" cy="30" rx="20" ry="7.5" stroke="#FFB5AB" stroke-width="2.4" fill="none"/>
+          <ellipse class="ring3" cx="30" cy="30" rx="20" ry="7.5" stroke="#DBB06B" stroke-width="2.4" fill="none"/>
+          <circle class="core-outer" cx="30" cy="30" r="6.5" fill="#E39A7B"/>
+          <circle cx="30" cy="30" r="3.8" fill="#FFD3AC"/>
+          <g class="dot1"><circle cx="50" cy="30" r="2.2" fill="#FFD3AC"/></g>
+          <g class="dot2"><circle cx="50" cy="30" r="1.8" fill="#FFB5AB"/></g>
+          <g class="dot3"><circle cx="50" cy="30" r="1.5" fill="#DBB06B"/></g>
+        </svg>
+    </div>
+    <span>Makers Co</span>
+  </a>
+  <ul class="n-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="https://makersco.github.io/ecommerce-daily-builds/">Daily Builds</a></li>
+    <li><a href="https://makersco.github.io/ecommerce-daily-builds/designs/" class="active">Designs</a></li>
+    <li><a href="https://makersco.github.io/ecommerce-daily-builds/cards/">Biz Cards</a></li>
+    <li><a href="index.html#about">About</a></li>
+  </ul>
+  <a href="index.html#contact" class="n-cta">Start a project →</a>
+  <button class="n-burger" id="nbtn" onclick="tm()"><i class="fas fa-bars" id="bicon"></i></button>
+</nav>
+
+<section class="hero">
+  <div class="orb" style="width:480px;height:480px;background:rgba(255,181,171,.1);top:-80px;right:-60px;animation-delay:0s"></div>
+  <div class="orb" style="width:280px;height:280px;background:rgba(219,176,107,.07);bottom:20px;left:25%;animation-delay:5s"></div>
+  <div class="wrap" style="width:100%">
+    <div class="hero-tag" id="htag"><span class="pulse-dot"></span>Fresh UI concepts · Drop daily at 6am</div>
+    <h1 class="hero-title" id="htitle">
+      <span class="ln"><span class="li">Design</span></span>
+      <span class="ln"><span class="li"><em>Concepts</em></span></span>
+      <span class="ln"><span class="li">That Convert.</span></span>
+    </h1>
+    <p class="hero-sub" id="hsub">Storefront, product pages, checkout flows, dashboards and campaign pages — curated UI ideas generated fresh every single day. Preview any design, then get it built.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="designs-section">
+  <div class="wrap">
+    <div class="filter-wrap" id="ftabs">
+      <button class="ftab on" onclick="filterD('all')" data-type="all"><i class="fas fa-th"></i> All</button>
+      <button class="ftab" onclick="filterD('storefront')" data-type="storefront"><i class="fas fa-store"></i> Storefront</button>
+      <button class="ftab" onclick="filterD('product-page')" data-type="product-page"><i class="fas fa-tag"></i> Product Page</button>
+      <button class="ftab" onclick="filterD('checkout')" data-type="checkout"><i class="fas fa-credit-card"></i> Checkout</button>
+      <button class="ftab" onclick="filterD('dashboard')" data-type="dashboard"><i class="fas fa-chart-bar"></i> Dashboard</button>
+      <button class="ftab" onclick="filterD('campaign')" data-type="campaign"><i class="fas fa-fire"></i> Campaign</button>
+    </div>
+
+    <div id="designs-grid"></div>
+
+    <div id="designs-loading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading today's designs...</p>
+    </div>
+    <div id="designs-empty" class="hidden">
+      <i class="fas fa-palette"></i>
+      <p class="empty-title">Designs drop at 6am!</p>
+      <p>Check back tomorrow morning for fresh ecommerce designs.</p>
+    </div>
+    <div id="designs-no-match" class="hidden">
+      <p>No designs in this category yet. More coming soon!</p>
+    </div>
+    <div id="designs-footer" class="hidden">
+      <a href="https://makersco.github.io/ecommerce-daily-builds/designs/" target="_blank" class="view-all">
+        <i class="fas fa-palette"></i> Browse All Design Archives <i class="fas fa-arrow-right" style="font-size:12px"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <a href="index.html" class="foot-logo">
+        <div class="foot-mark">
+          <svg viewBox="0 0 56 58" width="16" height="16" fill="none">
+            <polygon points="28,5 46,22 28,22" fill="rgba(255,255,255,.9)"/>
+            <polygon points="28,5 10,22 28,22" fill="rgba(255,255,255,.65)"/>
+            <polygon points="10,22 28,22 18,53" fill="rgba(255,255,255,.5)"/>
+            <polygon points="28,22 46,22 38,53" fill="rgba(255,255,255,.6)"/>
+            <polygon points="18,53 28,22 38,53" fill="rgba(255,255,255,.35)"/>
+            <polygon points="18,53 38,53 28,58" fill="rgba(255,255,255,.2)"/>
+          </svg>
+        </div>
+        <span>Makers Co</span>
+      </a>
+      <div class="foot-links">
+        <a href="index.html#services">Services</a>
+        <a href="https://makersco.github.io/ecommerce-daily-builds/">Daily Builds</a>
+        <a href="https://makersco.github.io/ecommerce-daily-builds/designs/">Designs</a>
+        <a href="https://makersco.github.io/ecommerce-daily-builds/cards/">Biz Cards</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <p class="foot-copy">© 2025 Makers Co · Kuala Lumpur, Malaysia</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const tl=gsap.timeline({defaults:{ease:'power4.out'}});
+  tl.to('#htag',{opacity:1,y:0,duration:.8,delay:.3})
+    .to('.hero-title .li',{y:'0%',duration:1.1,stagger:.1},'-=.4')
+    .to('#hsub',{opacity:1,y:0,duration:.85},'-=.6');
+});
+
+const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
+let mx=-100,my=-100,rx=-100,ry=-100;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+(function raf(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(raf)})();
+document.querySelectorAll('a,button,.dc,.ftab').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{dot.classList.add('hov');ring.classList.add('hov')});
+  el.addEventListener('mouseleave',()=>{dot.classList.remove('hov');ring.classList.remove('hov')});
+});
+
+const navEl=document.getElementById('nav'),btt=document.getElementById('btt');
+window.addEventListener('scroll',()=>{
+  navEl.classList.toggle('scrolled',scrollY>50);
+  btt.classList.toggle('show',scrollY>500);
+  document.getElementById('pb').style.width=(scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+},{passive:true});
+
+let mo=false;
+function tm(){mo=!mo;document.getElementById('mmenu').classList.toggle('open',mo);document.getElementById('bicon').className=mo?'fas fa-times':'fas fa-bars';document.body.style.overflow=mo?'hidden':'';}
+function cm(){mo=false;document.getElementById('mmenu').classList.remove('open');document.getElementById('bicon').className='fas fa-bars';document.body.style.overflow='';}
+
+/* 3D tilt + cursor glow */
+function initTilt(card){
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*12;
+    const y=((e.clientY-r.top)/r.height-.5)*-12;
+    card.style.transform=`perspective(900px) rotateX(${y}deg) rotateY(${x}deg) translateY(-6px)`;
+    const gx=((e.clientX-r.left)/r.width*100).toFixed(1);
+    const gy=((e.clientY-r.top)/r.height*100).toFixed(1);
+    card.style.background=`radial-gradient(circle at ${gx}% ${gy}%, rgba(255,211,172,.07) 0%, #140f0a 55%)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';card.style.background='';
+    card.style.transition='transform .5s cubic-bezier(.34,1.56,.64,1),border-color .35s,box-shadow .35s,background .3s';
+    setTimeout(()=>card.style.transition='',550);
+  });
+}
+
+const TYPE_LABELS={'storefront':{icon:'fa-store',label:'Storefront'},'product-page':{icon:'fa-tag',label:'Product Page'},'checkout':{icon:'fa-credit-card',label:'Checkout'},'dashboard':{icon:'fa-chart-bar',label:'Dashboard'},'campaign':{icon:'fa-fire',label:'Campaign'}};
+
+const JSON_URL='https://raw.githubusercontent.com/makersco/ecommerce-daily-builds/main/projects.json';
+let allDesigns=[],activeType='all';
+
+function designCard(d){
+  const meta=TYPE_LABELS[d.type]||{icon:'fa-palette',label:d.type};
+  const waMsg=encodeURIComponent(`Hi Makers Co! I want this ${d.type} design for ${d.niche}. Can you build it for my store?`);
+  return `<div class="dc" data-type="${d.type}">
+    <div class="dc-bar" style="background:${d.color}"></div>
+    <div class="dc-body">
+      <div class="dc-top">
+        <span class="dc-type" style="background:${d.color}22;color:${d.color};border:1px solid ${d.color}44">
+          <i class="fas ${meta.icon}"></i>${meta.label}
+        </span>
+        <span class="dc-style">${d.style?d.style.split(' ')[0]:''}</span>
+      </div>
+      <div class="dc-brand">${d.brand}</div>
+      <div class="dc-niche">${d.niche}</div>
+      <div class="dc-tagline">"${d.tagline}"</div>
+      <div class="dc-actions">
+        <a href="${d.url||d.preview_url}" target="_blank" class="dc-btn"
+          style="background:${d.color};box-shadow:0 4px 14px ${d.color}44">
+          <i class="fas fa-eye" style="font-size:12px"></i> View Design
+        </a>
+        <a href="https://wa.me/60172996254?text=${waMsg}" target="_blank" class="dc-btn-wa" title="Get this built"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderDesigns(type){
+  const grid=document.getElementById('designs-grid');
+  const empty=document.getElementById('designs-empty');
+  const noM=document.getElementById('designs-no-match');
+  const footer=document.getElementById('designs-footer');
+  const filtered=type==='all'?allDesigns:allDesigns.filter(d=>d.type===type);
+  grid.innerHTML='';empty.classList.add('hidden');noM.classList.add('hidden');footer.classList.add('hidden');
+  if(!allDesigns.length){empty.classList.remove('hidden');return}
+  if(!filtered.length){noM.classList.remove('hidden');return}
+  filtered.forEach(d=>grid.innerHTML+=designCard(d));
+  footer.classList.remove('hidden');
+  gsap.fromTo('.dc',{opacity:0,y:30},{opacity:1,y:0,duration:.6,stagger:.07,ease:'power3.out',
+    onComplete(){document.querySelectorAll('.dc').forEach(c=>initTilt(c))}
+  });
+}
+
+function filterD(type){
+  activeType=type;
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.toggle('on',b.dataset.type===type));
+  gsap.fromTo(`[data-type="${type}"]`,{scale:.92},{scale:1,duration:.3,ease:'back.out(2)'});
+  renderDesigns(type);
+}
+
+async function loadDesigns(){
+  try{
+    const r=await fetch(`${JSON_URL}?t=${Date.now()}`);
+    const all=await r.json();
+    const entry=all.find(e=>e.designs&&e.designs.length);
+    allDesigns=entry?.designs||[];
+  }catch(e){console.warn('designs:',e);allDesigns=[]}
+  document.getElementById('designs-loading').remove();
+  renderDesigns(activeType);
+}
+loadDesigns();
+</script>
+</body>
+</html>

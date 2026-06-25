@@ -1,0 +1,94 @@
+<svg width="1000" height="950" viewBox="0 0 1000 950" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="fabricBase" x1="120" y1="60" x2="880" y2="900" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#5e4630"/>
+    <stop offset="30%" stop-color="#4c3722"/>
+    <stop offset="55%" stop-color="#3c2a1a"/>
+    <stop offset="78%" stop-color="#2e2013"/>
+    <stop offset="100%" stop-color="#20150b"/>
+  </linearGradient>
+
+  <radialGradient id="fabricVignette" cx="50%" cy="42%" r="75%">
+    <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+    <stop offset="65%" stop-color="#000000" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#000000" stop-opacity="0.55"/>
+  </radialGradient>
+
+  <filter id="weave" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.85" numOctaves="2" seed="7" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0.9 0.9 0 0" result="na"/>
+    <feComponentTransfer in="na" result="nb">
+      <feFuncA type="linear" slope="0.16" intercept="0"/>
+    </feComponentTransfer>
+    <feFlood flood-color="#000000" result="blk"/>
+    <feComposite in="blk" in2="nb" operator="in" result="grain"/>
+  </filter>
+
+  <linearGradient id="ringGrad5" x1="270" y1="150" x2="730" y2="610" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#FFC9A6"/>
+    <stop offset="40%" stop-color="#FF8F6B"/>
+    <stop offset="75%" stop-color="#F2654A"/>
+    <stop offset="100%" stop-color="#D9492F"/>
+  </linearGradient>
+
+  <radialGradient id="orb5" cx="34%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#FFFFFF"/>
+    <stop offset="20%" stop-color="#F4E7F2"/>
+    <stop offset="48%" stop-color="#C7AED4"/>
+    <stop offset="78%" stop-color="#7C68A6"/>
+    <stop offset="100%" stop-color="#2E2347"/>
+  </radialGradient>
+
+  <filter id="glow5" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="9" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="softblur5" x="-100%" y="-100%" width="300%" height="300%">
+    <feGaussianBlur stdDeviation="14"/>
+  </filter>
+</defs>
+
+<rect width="1000" height="950" fill="url(#fabricBase)"/>
+
+<g opacity="0.55">
+  <ellipse cx="180" cy="120" rx="520" ry="220" fill="#6c5238" opacity="0.35" filter="url(#softblur5)" transform="rotate(-18 180 120)"/>
+  <ellipse cx="860" cy="300" rx="460" ry="180" fill="#1a1208" opacity="0.45" filter="url(#softblur5)" transform="rotate(12 860 300)"/>
+  <ellipse cx="150" cy="760" rx="500" ry="200" fill="#1a1208" opacity="0.4" filter="url(#softblur5)" transform="rotate(-10 150 760)"/>
+  <ellipse cx="820" cy="820" rx="480" ry="210" fill="#6c5238" opacity="0.28" filter="url(#softblur5)" transform="rotate(16 820 820)"/>
+</g>
+
+<rect width="1000" height="950" filter="url(#weave)" opacity="0.5"/>
+
+<rect width="1000" height="950" fill="url(#fabricVignette)"/>
+
+<g transform="translate(500,380)">
+  <g opacity="0.85">
+    <circle cx="-340" cy="-220" r="3.5" fill="#C9A8FF" opacity="0.6"/>
+    <circle cx="300" cy="-260" r="2.6" fill="#8FC6E8" opacity="0.55"/>
+    <circle cx="350" cy="120" r="3" fill="#E8C99B" opacity="0.5"/>
+    <circle cx="-380" cy="60" r="2.4" fill="#D98F6B" opacity="0.5"/>
+    <circle cx="220" cy="280" r="2.2" fill="#C9A8FF" opacity="0.42"/>
+    <circle cx="-220" cy="260" r="2.6" fill="#8FC6E8" opacity="0.45"/>
+    <circle cx="20" cy="-300" r="2.2" fill="#E8C99B" opacity="0.45"/>
+  </g>
+
+  <g opacity="0.5" filter="url(#softblur5)">
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad5)" stroke-width="14" transform="rotate(-32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad5)" stroke-width="14" transform="rotate(32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad5)" stroke-width="14" transform="rotate(90)"/>
+  </g>
+
+  <g filter="url(#glow5)">
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad5)" stroke-width="2.8" transform="rotate(-32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad5)" stroke-width="2.8" transform="rotate(32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad5)" stroke-width="2.8" transform="rotate(90)"/>
+  </g>
+
+  <circle r="58" fill="url(#orb5)"/>
+  <path d="M -40 38 A 58 58 0 0 0 20 54" fill="none" stroke="#9FD8FF" stroke-width="3" opacity="0.6"/>
+  <ellipse cx="-16" cy="-22" rx="14" ry="9" fill="#FFFFFF" opacity="0.9" filter="url(#softblur5)"/>
+</g>
+
+<text x="500" y="700" text-anchor="middle" font-family="Avenir Next, Avenir, Helvetica Neue, sans-serif" font-weight="800" font-size="74" letter-spacing="10" fill="#FBF3E9">MAKERS CO</text>
+<text x="500" y="752" text-anchor="middle" font-family="Avenir Next, Avenir, Helvetica Neue, sans-serif" font-weight="600" font-size="23" letter-spacing="7" fill="#D9BFAE">WE BUILD &#183; YOU GROW</text>
+</svg>

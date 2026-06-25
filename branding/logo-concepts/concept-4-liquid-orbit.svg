@@ -1,0 +1,65 @@
+<svg width="1000" height="950" viewBox="0 0 1000 950" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bg4" cx="50%" cy="36%" r="78%">
+    <stop offset="0%" stop-color="#120f16"/>
+    <stop offset="55%" stop-color="#0a0810"/>
+    <stop offset="100%" stop-color="#040306"/>
+  </radialGradient>
+  <linearGradient id="holo" x1="240" y1="140" x2="760" y2="620" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#FF9277"/>
+    <stop offset="24%" stop-color="#FFC68C"/>
+    <stop offset="48%" stop-color="#C9A8FF"/>
+    <stop offset="72%" stop-color="#7EC8FF"/>
+    <stop offset="100%" stop-color="#FF9277"/>
+  </linearGradient>
+  <radialGradient id="orb4" cx="34%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#FFFFFF"/>
+    <stop offset="20%" stop-color="#FFE3CE"/>
+    <stop offset="48%" stop-color="#D7A8C9"/>
+    <stop offset="78%" stop-color="#6E5C9E"/>
+    <stop offset="100%" stop-color="#241A38"/>
+  </radialGradient>
+  <filter id="g4" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur stdDeviation="11" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="soft4" x="-100%" y="-100%" width="300%" height="300%">
+    <feGaussianBlur stdDeviation="16"/>
+  </filter>
+</defs>
+
+<rect width="1000" height="950" fill="url(#bg4)"/>
+
+<g opacity="0.9">
+  <circle cx="248" cy="200" r="3.5" fill="#C9A8FF" opacity="0.7"/>
+  <circle cx="770" cy="230" r="2.5" fill="#7EC8FF" opacity="0.6"/>
+  <circle cx="800" cy="520" r="3" fill="#FFC68C" opacity="0.55"/>
+  <circle cx="220" cy="560" r="2.2" fill="#FF9277" opacity="0.5"/>
+  <circle cx="690" cy="640" r="2" fill="#C9A8FF" opacity="0.45"/>
+  <circle cx="300" cy="640" r="2.6" fill="#7EC8FF" opacity="0.5"/>
+  <circle cx="500" cy="120" r="2.2" fill="#FFC68C" opacity="0.5"/>
+</g>
+
+<g transform="translate(500,380)">
+  <g opacity="0.55" filter="url(#soft4)">
+    <ellipse rx="240" ry="92" fill="none" stroke="url(#holo)" stroke-width="18" transform="rotate(-30)"/>
+    <ellipse rx="240" ry="92" fill="none" stroke="url(#holo)" stroke-width="18" transform="rotate(34)"/>
+    <ellipse rx="240" ry="92" fill="none" stroke="url(#holo)" stroke-width="18" transform="rotate(90)"/>
+  </g>
+  <g filter="url(#g4)">
+    <ellipse rx="240" ry="92" fill="none" stroke="url(#holo)" stroke-width="3.4" transform="rotate(-30)"/>
+    <ellipse rx="240" ry="92" fill="none" stroke="url(#holo)" stroke-width="3.4" transform="rotate(34)"/>
+    <ellipse rx="240" ry="92" fill="none" stroke="url(#holo)" stroke-width="3.4" transform="rotate(90)"/>
+  </g>
+
+  <circle cx="168" cy="-62" r="7.5" fill="#FFC68C" filter="url(#g4)"/>
+  <circle cx="-160" cy="68" r="6.5" fill="#7EC8FF" filter="url(#g4)"/>
+
+  <circle r="62" fill="url(#orb4)"/>
+  <path d="M -42 38 A 62 62 0 0 0 22 56" fill="none" stroke="#9FD8FF" stroke-width="3" opacity="0.55"/>
+  <ellipse cx="-18" cy="-24" rx="15" ry="9" fill="#FFFFFF" opacity="0.9"/>
+</g>
+
+<text x="500" y="700" text-anchor="middle" font-family="Futura, Avenir Next, sans-serif" font-weight="700" font-size="72" letter-spacing="9" fill="#F5EFE6">MAKERS CO</text>
+<text x="500" y="753" text-anchor="middle" font-family="Futura, Avenir Next, sans-serif" font-weight="500" font-size="22" letter-spacing="7" fill="#B49CD6">WE BUILD &#183; YOU GROW</text>
+</svg>

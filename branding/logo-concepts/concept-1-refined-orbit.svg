@@ -1,0 +1,54 @@
+<svg width="1000" height="950" viewBox="0 0 1000 950" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+    <stop offset="0%" stop-color="#16100b"/>
+    <stop offset="55%" stop-color="#0c0805"/>
+    <stop offset="100%" stop-color="#050302"/>
+  </radialGradient>
+  <linearGradient id="ringGrad" x1="270" y1="150" x2="730" y2="610" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#FFE3C4"/>
+    <stop offset="35%" stop-color="#FFB5AB"/>
+    <stop offset="68%" stop-color="#E39A7B"/>
+    <stop offset="100%" stop-color="#DBB06B"/>
+  </linearGradient>
+  <radialGradient id="orb" cx="36%" cy="32%" r="68%">
+    <stop offset="0%" stop-color="#FFF3E4"/>
+    <stop offset="22%" stop-color="#FFD9B5"/>
+    <stop offset="50%" stop-color="#F0A98A"/>
+    <stop offset="78%" stop-color="#C97A63"/>
+    <stop offset="100%" stop-color="#5C3327"/>
+  </radialGradient>
+  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="9" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="softblur" x="-100%" y="-100%" width="300%" height="300%">
+    <feGaussianBlur stdDeviation="14"/>
+  </filter>
+</defs>
+
+<rect width="1000" height="950" fill="url(#bg)"/>
+
+<g transform="translate(500,380)">
+  <g opacity="0.5" filter="url(#softblur)">
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad)" stroke-width="14" transform="rotate(-32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad)" stroke-width="14" transform="rotate(32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad)" stroke-width="14" transform="rotate(90)"/>
+  </g>
+
+  <g filter="url(#glow)">
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad)" stroke-width="2.6" transform="rotate(-32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad)" stroke-width="2.6" transform="rotate(32)"/>
+    <ellipse rx="230" ry="84" fill="none" stroke="url(#ringGrad)" stroke-width="2.6" transform="rotate(90)"/>
+  </g>
+
+  <circle cx="158" cy="-58" r="7" fill="#FFE3C4" filter="url(#glow)"/>
+  <circle cx="-150" cy="64" r="6" fill="#DBB06B" filter="url(#glow)"/>
+
+  <circle r="58" fill="url(#orb)"/>
+  <ellipse cx="-16" cy="-22" rx="14" ry="9" fill="#FFFBF3" opacity="0.85" filter="url(#softblur)"/>
+</g>
+
+<text x="500" y="700" text-anchor="middle" font-family="Avenir Next, Avenir, Helvetica Neue, sans-serif" font-weight="800" font-size="74" letter-spacing="10" fill="#F7ECE0">MAKERS CO</text>
+<text x="500" y="752" text-anchor="middle" font-family="Avenir Next, Avenir, Helvetica Neue, sans-serif" font-weight="600" font-size="23" letter-spacing="7" fill="#C9A877">WE BUILD &#183; YOU GROW</text>
+</svg>
